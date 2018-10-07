@@ -1,0 +1,28 @@
+{
+  "name": "azure-commercial-app",
+  "version": "1.0.0",
+  "description": "code that was created to serve with commercial app",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpmartinez91/azure-functions-commercial-app.git"
+  },
+  "keywords": [
+    "azure",
+    "functions",
+    "serverless"
+  ],
+  "author": "jpmartinez91",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpmartinez91/azure-functions-commercial-app/issues"
+  },
+  "homepage": "https://github.com/jpmartinez91/azure-functions-commercial-app#readme",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "mongodb": "^3.1.6"
+  }
+}
