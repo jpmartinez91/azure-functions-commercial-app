@@ -1,21 +1,20 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require('assert');
 
-const url = "mongodb://localhost:27017/"
-
+const url = "mongodb://productstesis:cCQgl1FCF0Phuud89Gf7hS8kqdzERaShnWjonjEGyxL1Ln24HnoRAMQFCGr7ePhQfytpqODy3OicMQEE7HgXGA%3D%3D@productstesis.documents.azure.com:10255/?ssl=true";
+// const url = "mongodb://localhost:27017/"
 const dbName = 'Productos';
+const client = new MongoClient(url);
 
 module.exports = async function (context, req)
 {
-    const client = new MongoClient(url);
     let mongoExe;
-
     if (req.body) {
         const data = req.body;
         try {
             await client.connect();
             const db = client.db(dbName);
-            mongoExe = await db.collection("product").update({ id_p: data.id_p }, {
+            mongoExe = await db.collection("product").update({ id_product: data.id_product }, {
                 $set: {
                     name_product: data.name_product,
                     price_product: data.price_product,
@@ -25,25 +24,21 @@ module.exports = async function (context, req)
                     state_product: data.state_product
                 }
             })
-            context.log(mongoExe);
-
         } catch (error) {
             context.res = {
                 status: 400,
-                body: "Ocurrio un error al ejecutar la acción"
+                body: "Error has occurred"
             };
         }
         context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: {
-                mensaje: "Hello " + req.body,
-            }
+            status: 200, 
+            body: "Item was updated",
         };
     }
     else {
         context.res = {
             status: 400,
-            body: "Please pass a name on the query string or in the request body"
+            body: "Missing parameters"
         };
     }
 };
