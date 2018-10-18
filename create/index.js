@@ -38,7 +38,7 @@ module.exports = async function (context, req)
         }
         context.res = {
             status: 200,
-            body: "Item " + mongoResponse.insertedId + " was created"
+            body: "Item was created"
         };
     }
     else {
