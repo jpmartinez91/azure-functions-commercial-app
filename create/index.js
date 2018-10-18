@@ -11,9 +11,9 @@ const dbName = 'Productos';
 const client = new MongoClient(url);
 module.exports = async function (context, req)
 {
-    let mongoResponse;
     if (req.body) {
         const data = req.body;
+        const timestamp = new Date().getTime();
         try {
             await client.connect();
             context.log("Connected correctly to server");
@@ -25,21 +25,22 @@ module.exports = async function (context, req)
                 units_product: data.units_product,
                 description_product: data.description_product,
                 line_product: data.line_product,
-                state_product: data.state_product
+                state_product: data.state_product,
+                created: timestamp,
+                updated: timestamp
             }
-            mongoResponse = await db.collection('product').insertOne(info);
-            context.log(mongoResponse)
+            const mongoResponse = db.collection('product').insertOne(info);
             assert.equal(1, mongoResponse.insertedCount);
+            context.res = {
+                status: 200,
+                body: "Item was created"
+            };
         } catch (error) {
             context.res = {
                 status: 400,
                 body: "Error has occurred"
             };
         }
-        context.res = {
-            status: 200,
-            body: "Item was created"
-        };
     }
     else {
         context.res = {
