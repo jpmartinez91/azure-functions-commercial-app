@@ -31,16 +31,16 @@ module.exports = async function (context, req)
             }
             const mongoResponse = db.collection('product').insertOne(info);
             assert.equal(1, mongoResponse.insertedCount);
-            context.res = {
-                status: 200,
-                body: "Item was created"
-            };
         } catch (error) {
             context.res = {
                 status: 400,
                 body: "Error has occurred"
             };
         }
+        context.res = {
+            status: 200,
+            body: "Item was created"
+        };
     }
     else {
         context.res = {
