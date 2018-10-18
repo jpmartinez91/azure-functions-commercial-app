@@ -29,7 +29,7 @@ module.exports = async function (context, req)
                 created: timestamp,
                 updated: timestamp
             }
-            const mongoResponse = db.collection('product').insertOne(info);
+            let mongoResponse = await db.collection('product').insertOne(info);
             assert.equal(1, mongoResponse.insertedCount);
         } catch (error) {
             context.res = {
