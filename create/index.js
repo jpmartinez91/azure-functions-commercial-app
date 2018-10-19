@@ -37,6 +37,8 @@ module.exports = async function (context, req)
                 body: "Error has occurred"
             };
         }
+        context.log("----")
+
         context.res = {
             status: 200,
             body: "Item was created"
