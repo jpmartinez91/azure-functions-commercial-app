@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/jpmartinez91/azure-functions-commercial-app#readme",
   "dependencies": {
-    "assert": "^1.4.1",
     "mongodb": "^3.1.6",
     "uuid": "^3.3.2"
   }

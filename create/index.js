@@ -1,53 +1,59 @@
 'use strict';
 
 const MongoClient = require("mongodb").MongoClient;
-const assert = require('assert');
 const uuid = require('uuid')
 
-const url = "mongodb://productstesis:cCQgl1FCF0Phuud89Gf7hS8kqdzERaShnWjonjEGyxL1Ln24HnoRAMQFCGr7ePhQfytpqODy3OicMQEE7HgXGA%3D%3D@productstesis.documents.azure.com:10255/?ssl=true";
-// const url = "mongodb://localhost:27017/"
+const url = "mongodb://localhost:27017/";
 
 const dbName = 'Productos';
 const client = new MongoClient(url);
+let db = null;
+
 module.exports = async function (context, req)
 {
     if (req.body) {
-        const data = req.body;
-        const timestamp = new Date().getTime();
-        try {
-            await client.connect();
-            context.log("Connected correctly to server");
-            const db = client.db(dbName);
-            const info = {
-                id_product: uuid.v1(),
-                name_product: data.name_product,
-                price_product: data.price_product,
-                units_product: data.units_product,
-                description_product: data.description_product,
-                line_product: data.line_product,
-                state_product: data.state_product,
-                created: timestamp,
-                updated: timestamp
+        if (db === null) {
+            try {
+                await client.connect();
+                db = client.db(dbName);
+            } catch (error) {
+                context.log("Error with connection with mongoDB " + error.message);
+                returnContext(400, "Error has occurred trying to connect with mongoDB");
             }
-            let mongoResponse = await db.collection('product').insertOne(info);
-            assert.equal(1, mongoResponse.insertedCount);
-        } catch (error) {
-            context.res = {
-                status: 400,
-                body: "Error has occurred"
-            };
         }
-        context.log("----")
-
-        context.res = {
-            status: 200,
-            body: "Item was created"
+        const timestamp = new Date().getTime();
+        const info = {
+            id_product: uuid.v1(),
+            name_product: req.body.name_product,
+            price_product: req.body.price_product,
+            units_product: req.body.units_product,
+            description_product: req.body.description_product,
+            line_product: req.body.line_product,
+            state_product: req.body.state_product,
+            created: timestamp,
+            updated: timestamp
         };
+        try {
+            db.collection('product').insertOne(info);
+        } catch (error) {
+            context.log("Error with insertion task, " + error.message);
+            returnContext(400, "Error has occurred with data insertion");
+        }
+        returnContext(200,
+            {
+                mas: "Item was created successfully",
+                menos: "oooo"
+            });
     }
     else {
-        context.res = {
-            status: 400,
-            body: "Missing parameters"
+        returnContext(400, "Missing parameters");
+    }
+
+    function returnContext(code, msg)
+    {
+        return context.res = {
+            status: code,
+            body: msg
         };
     }
 };

@@ -1,44 +1,56 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require('assert');
 
-const url = "mongodb://productstesis:cCQgl1FCF0Phuud89Gf7hS8kqdzERaShnWjonjEGyxL1Ln24HnoRAMQFCGr7ePhQfytpqODy3OicMQEE7HgXGA%3D%3D@productstesis.documents.azure.com:10255/?ssl=true";
-// const url = "mongodb://localhost:27017/"
+const url = "mongodb://localhost:27017/"
+
 const dbName = 'Productos';
 const client = new MongoClient(url);
+let db = null;
 
 module.exports = async function (context, req)
 {
-    let mongoExe;
     if (req.body) {
-        const data = req.body;
+        if (db === null) {
+            try {
+                await client.connect();
+                db = client.db(dbName);
+            } catch (error) {
+                context.log("Error with connection with mongoDB " + error.message);
+                returnContext(400, "Error has occurred trying to connect with mongoDB");
+            }
+        }
+        const timestamp = new Date().getTime();
         try {
-            await client.connect();
-            const db = client.db(dbName);
-            mongoExe = await db.collection("product").update({ id_product: data.id_product }, {
+            await db.collection("product").update({ id_product: req.body.id_product }, {
                 $set: {
-                    name_product: data.name_product,
-                    price_product: data.price_product,
-                    units_product: data.units_product,
-                    description_product: data.description_product,
-                    line_product: data.line_product,
-                    state_product: data.state_product
+                    name_product: req.body.name_product,
+                    price_product: req.body.price_product,
+                    units_product: req.body.units_product,
+                    description_product: req.body.description_product,
+                    line_product: req.body.line_product,
+                    state_product: req.body.state_product,
+                    updated: timestamp
                 }
             })
         } catch (error) {
-            context.res = {
-                status: 400,
-                body: "Error has occurred"
-            };
+            context.log("Error with update task, " + error.message);
+            returnContext(400, "Error has occurred with data update");
         }
-        context.res = {
-            status: 200, 
-            body: "Item was updated",
-        };
+        returnContext(200,
+            {
+                mas: "Item was created successfully",
+                menos: "oooo"
+            });
     }
     else {
-        context.res = {
-            status: 400,
-            body: "Missing parameters"
+        returnContext(400, "Missing parameters");
+    }
+
+    function returnContext(code, msg)
+    {
+        return context.res = {
+            status: code,
+            body: msg
         };
     }
 };
