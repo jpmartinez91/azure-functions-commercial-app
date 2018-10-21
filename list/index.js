@@ -15,7 +15,7 @@ module.exports = function (context, req)
                 context.log('Failed to connect with mongodb ' + error.message);
                 context.res = {
                     status: 500,
-                    body: "An error hhas ocurred whit db connection"
+                    body: "An error hhas ocurred whit db connection " + error.message
                 }
                 return context.done();
             }
