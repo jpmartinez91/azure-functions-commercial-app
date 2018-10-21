@@ -2,7 +2,7 @@
 
 const MongoClient = require("mongodb")
 
-const url = "mongodb://localhost:27017/"
+const url = "mongodb://commercialdatabase:zjNeX5o3xCkiq3GTVJnACJXyoeVqx6XjQT6xanb7NcdDESvWEFyiGQsNXU7md8f0Dh5JlXUXxVIIRWfMRFRaNw==@commercialdatabase.documents.azure.com:10255/?ssl=true"
 const dbName = 'Productos';
 let client = null;
 

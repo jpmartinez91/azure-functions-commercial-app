@@ -1,7 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
-const assert = require('assert');
 
-const url = "mongodb://localhost:27017/"
+const url = "mongodb://commercialdatabase:zjNeX5o3xCkiq3GTVJnACJXyoeVqx6XjQT6xanb7NcdDESvWEFyiGQsNXU7md8f0Dh5JlXUXxVIIRWfMRFRaNw==@commercialdatabase.documents.azure.com:10255/?ssl=true"
 
 const dbName = 'Productos';
 const client = new MongoClient(url);
@@ -38,8 +37,7 @@ module.exports = async function (context, req)
         }
         returnContext(200,
             {
-                mas: "Item was created successfully",
-                menos: "oooo"
+                msg: "Item was created successfully"
             });
     }
     else {
