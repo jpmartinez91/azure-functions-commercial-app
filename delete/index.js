@@ -2,7 +2,7 @@
 
 const MongoClient = require("mongodb").MongoClient;
 
-const url = "mongodb://commercialdatabase:zjNeX5o3xCkiq3GTVJnACJXyoeVqx6XjQT6xanb7NcdDESvWEFyiGQsNXU7md8f0Dh5JlXUXxVIIRWfMRFRaNw==@commercialdatabase.documents.azure.com:10255/?ssl=true"
+const url = "mongodb://commercialdatabase:zjNeX5o3xCkiq3GTVJnACJXyoeVqx6XjQT6xanb7NcdDESvWEFyiGQsNXU7md8f0Dh5JlXUXxVIIRWfMRFRaNw%3D%3D@commercialdatabase.documents.azure.com:10255/?ssl=true";
 
 const dbName = 'Productos';
 const client = new MongoClient(url);
