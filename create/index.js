@@ -6,15 +6,15 @@ const uuid = require('uuid')
 const url = "mongodb://commercialdatabase:zjNeX5o3xCkiq3GTVJnACJXyoeVqx6XjQT6xanb7NcdDESvWEFyiGQsNXU7md8f0Dh5JlXUXxVIIRWfMRFRaNw%3D%3D@commercialdatabase.documents.azure.com:10255/?ssl=true";
 
 const dbName = 'Productos';
-const client = new MongoClient(url);
+const client = new MongoClient(url, { useNewUrlParser: true });
 let db = null;
 
-module.exports = async function (context, req)
+module.exports = function (context, req)
 {
     if (req.body) {
         if (db === null) {
             try {
-                await client.connect();
+                client.connect();
                 db = client.db(dbName);
             } catch (error) {
                 context.log("Error with connection with mongoDB " + error.message);
@@ -33,9 +33,8 @@ module.exports = async function (context, req)
             created: timestamp,
             updated: timestamp
         };
-        let monoResponse;
         try {
-            monoResponse = db.collection('product').insertOne(info);
+            var monoResponse = db.collection('product').insertOne(info);
             context.log(monoResponse);
         } catch (error) {
             context.log("Error with insertion task, " + error.message);
@@ -52,9 +51,10 @@ module.exports = async function (context, req)
 
     function returnContext(code, msg)
     {
-        return context.res = {
+        context.res = {
             status: code,
             body: msg
         };
+        return context.done();
     }
 };
