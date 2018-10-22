@@ -33,8 +33,10 @@ module.exports = async function (context, req)
             created: timestamp,
             updated: timestamp
         };
+        let monoResponse;
         try {
-            db.collection('product').insertOne(info);
+            monoResponse = db.collection('product').insertOne(info);
+            context.log(monoResponse);
         } catch (error) {
             context.log("Error with insertion task, " + error.message);
             returnContext(400, "Error has occurred with data insertion");
@@ -42,7 +44,6 @@ module.exports = async function (context, req)
         returnContext(200,
             {
                 mas: "Item was created successfully",
-                menos: "oooo"
             });
     }
     else {
